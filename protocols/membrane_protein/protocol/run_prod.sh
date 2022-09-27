@@ -1,10 +1,12 @@
 #!/bin/bash
-#SBATCH --nodes 1
 #SBATCH -A eberini
+#SBATCH -p normal
 #SBATCH --gres=gpu:1
-#SBATCH --job-name equil
+#SBATCH --job-name prod
 #SBATCH -o %j.out
 #SBATCH -e %j.err
+
+export CUDA_VISIBLE_DEVICES=0,1
 
 module load amber/21_omp
 
@@ -15,9 +17,13 @@ STEP_IN=Prod.in
 
 NSTEPS=10
 
+echo Starting production protocol
+date
+echo
+
 inpcrd=$INPCRD
 for ((istep=1; istep <= NSTEPS; istep++)); do
-	istep=$(printf "%0${#NSTEPS}d" $istep)
+	istep=$(printf "%0${#NSTEPS}d" "$istep")
 	if [[ -f "step_${istep}.ok" ]]; then
 		istep=$((istep + 1))
 		continue

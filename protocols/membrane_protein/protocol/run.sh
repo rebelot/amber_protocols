@@ -1,13 +1,12 @@
 #!/bin/bash
-#SBATCH --nodes 1
 #SBATCH -A eberini
+#SBATCH -p normal
 #SBATCH --gres=gpu:1
 #SBATCH --job-name equil
 #SBATCH -o %j.out
 #SBATCH -e %j.err
 
-# export CUDA_VISIBLE_DEVICE=1
-# set -e
+export CUDA_VISIBLE_DEVICES=0,1
 
 module load amber/21_omp
 
@@ -26,7 +25,7 @@ for prot in $(find "$PROTDIR" -name "*.in"); do
     sed -e "s/LIPID_MASK/$LIPID_MASK/" \
         -e "s/SOLUTE_HEAVY_MASK/$SOLUTE_HEAVY_MASK/" \
         -e "s/SOLUTE_BACKBONE_MASK/$SOLUTE_BACKBONE_MASK/" \
-        -e "s/SOLUTE_CA_MASK/$SOLUTE_CA_MASK/" "$prot" >"${prot##*/}"
+        -e "s/SOLUTE_CA_MASK/$SOLUTE_CA_MASK/" "$prot" >"$(basename $prot)"
 done
 
 echo Starting minimization/relaxation protocol
