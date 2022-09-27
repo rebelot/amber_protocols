@@ -1,0 +1,22 @@
+parm system.prmtop
+trajin *_0?.nc
+autoimage
+trajout merged.nc
+
+vector boxinfo box out box.dat
+areapermol apl_PE ":PE" nlayers 2 out apl_PE.dat
+areapermol apl_PGR ":PGR" nlayers 2 out apl_PGR.dat
+go
+
+clear all
+parm system.prmtop
+trajin *07.nc
+density out density.dat electron ":PE" ":PGR" ":OL,PA" ":WAT" "@Na+,Cl-"
+lipidscd liporder_PE_OL ":PE,OL" out lip_order_PE_OL.dat
+lipidscd liporder_PE_PA ":PE,PA" out lip_order_PE_PA.dat
+lipidscd liporder_PGR_OL ":PGR,OL" out lip_order_PGR_OL.dat
+lipidscd liporder_PGR_PA ":PGR,PA" out lip_order_PGR_PA.dat
+vector boxinfo box out box_eq.dat
+areapermol apl_PE ":PE" nlayers 2 out apl_PE_eq.dat
+areapermol apl_PGR ":PGR" nlayers 2 out apl_PGR_eq.dat
+go

@@ -1,0 +1,17 @@
+Short minimization w/ restraints on protein heavy atoms
+ &cntrl
+  imin=1,       ! Minimize the initial structure
+  maxcyc=1000,  ! Maximum number of cycles for minimization
+  ncyc=500,     ! Switch from steepest descent to conjugate gradient minimization after ncyc cycles
+  ntb=1,        ! Constant volume (default with ntp=igb=0)
+  ntp=0,        ! No pressure scaling
+  ntf=1,        ! Complete force evaluation
+  ntc=1,        ! No SHAKE  (usually ntf == ntc)
+  ntpr=50,      ! Print to mdout every ntpr steps
+  ntwr=2000,    ! Write a restart file every ntwr steps
+  ntwx=50       ! Write coordinates every ntwx steps
+  cut=10.0,     ! Nonbonded cutoff in Angstroms
+  ntr=1,
+  restraint_wt=50.0,
+  restraintmask='SOLUTE_HEAVY_MASK',
+ /
