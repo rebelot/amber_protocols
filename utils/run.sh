@@ -15,7 +15,7 @@ PRMTOP=system.prmtop         # Input topology
 INPCRD=system.inpcrd         # Input coordinates
 
 PROD_INPCRD=last_step.rst7   # The input coordinates for the production run (usually the rst7 from the last equilibration step)
-PROD_STEP=Prod.in            # The name of the production step
+PROD_STEP=Prod.mdin          # The name of the production step
 NSTEPS=10                    # The number of times to repeat the production step
 
 $AMBERPROTOCOLS/utils/run_steps $PRMTOP $INPCRD $NAME || exit 1
