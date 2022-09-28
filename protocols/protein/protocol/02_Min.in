@@ -1,0 +1,21 @@
+Thorough minimization
+ &cntrl
+  imin=1,            ! This run is a minimization run.
+  irest=0,           ! Don't read restart simulation.
+  ntx=1,             ! The coordinates but not velocities are read formatted from the coordinate file provided. 
+  maxcyc=10000,      ! The maximum amount of minimization cycles is 1000.
+  ncyc=5000,         ! The first 20 cycles will utilize the steepest descent algorithm before shifting to the conjugate gradient algorithm for the remaining cycles. 
+  ntwr=500,          ! The amount of steps in which "restrt" files are written.
+  ntwx=500           ! Write coordinates every ntwx steps
+  ntpr=50,           ! The amount of steps in which "mdout" and "mdinfo" files are written.
+  ntc=1,             ! No SHAKE
+  ntf=1,             ! Complete force evaluation
+  ntb=1,             ! There is constant volume.
+  ntp=0,             ! There is no pressure scaling.
+  cut=10.0,          ! The non-bonded cutoff is 10.0 Angstroms.
+  ntr=1,             ! Use restraints.
+  restraintmask=SOLUTE_MASK, ! Restrain the solute
+  restraint_wt=100,  ! 100  Positional restraint is 100 kcal/mol*Ang^-2.
+  ioutfm=1,          ! The format of the coordinate and velocity trajectory files written as binary NetCDF.
+  ntxo=2,            ! The "restrt" file format is NetCDF.
+ /

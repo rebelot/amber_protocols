@@ -1,25 +1,15 @@
 #!/bin/bash
-#SBATCH -A eberini
-#SBATCH -p normal
-#SBATCH --gres=gpu:1
-#SBATCH --job-name prod
-#SBATCH -o %j.out
-#SBATCH -e %j.err
 
-export CUDA_VISIBLE_DEVICES=0,1
+if [[ $# -ne 5 ]]; then
+    echo "Usage: $0 prmtop inpcrd step nrep basename"
+    exit 1
+fi
 
-module load amber/21_omp
-
-NAME=md
-PRMTOP=system.prmtop
-INPCRD=md_07.rst7
-STEP_IN=Prod.in
-
-NSTEPS=10
-
-echo Starting production protocol
-date
-echo
+PRMTOP=$1
+INPCRD=$2
+STEP_IN=$3
+NSTEPS=$4
+NAME=$5
 
 inpcrd=$INPCRD
 for ((istep=1; istep <= NSTEPS; istep++)); do
