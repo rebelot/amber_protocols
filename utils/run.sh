@@ -6,7 +6,7 @@
 #SBATCH -o %j.out
 #SBATCH -e %j.err
 
-export CUDA_VISIBLE_DEVICES=0,1
+# export CUDA_VISIBLE_DEVICES=0
 
 module load amber/21_omp     # sets AMBERHOME and AMBERPROTOCOLS
 

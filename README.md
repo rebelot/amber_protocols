@@ -20,7 +20,7 @@ export AMBERPROTOCOLS=<path-to-this-repo>
 - Copy the desired protocol folder to your working directory
 
 ```bash
-cp $AMBERPROTOCOLS/protocols/protein/protocol protocol
+cp -r $AMBERPROTOCOLS/protocols/protein/protocol protocol
 ```
 
 - (optional) If needed, edit the protocol files
