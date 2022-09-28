@@ -14,14 +14,14 @@ NAME=$5
 inpcrd=$INPCRD
 for ((istep=1; istep <= NSTEPS; istep++)); do
 	istep=$(printf "%0${#NSTEPS}d" "$istep")
-	if [[ -f "step_${istep}.ok" ]]; then
+	if [[ -f "${NAME}_step_${istep}.ok" ]]; then
 		istep=$((istep + 1))
 		continue
 	fi
 	echo "Step $istep"
 	grep -q 'imin\s*=\s*1' $STEP_IN && prog="$AMBERHOME/bin/pmemd.cuda_DPFP" || prog="$AMBERHOME/bin/pmemd.cuda"
 	$prog -O -i "$STEP_IN" -o "${NAME}_${istep}.mdout" -p $PRMTOP -c $inpcrd -r "${NAME}_${istep}.rst7" -ref "$inpcrd" -inf "${NAME}_${istep}.mdinfo" -x "${NAME}_${istep}.nc" || exit 1
-	touch "step_${istep}.ok"
+	touch "${NAME}_step_${istep}.ok"
 	echo "done: $(date)"
 	echo
 	inpcrd="${NAME}_${istep}.rst7"

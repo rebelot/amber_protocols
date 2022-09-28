@@ -11,11 +11,13 @@
 module load amber/21_omp     # sets AMBERHOME and AMBERPROTOCOLS
 
 RUN_EQUIL=true               # Whether to run the equilibration steps
-NAME=MD                      # The basename for MD files
+NAME=MD_equil                # The basename for MD files
 PRMTOP=system.prmtop         # Input topology
 INPCRD=system.inpcrd         # Input coordinates
 
+
 RUN_PROD=false               # Whether to run the production MD
+PROD_NAME=MD_prod            # The basename for MD files
 PROD_INPCRD=last_step.rst7   # The input coordinates for the production run (usually the rst7 from the last equilibration step)
 PROD_STEP=Prod.mdin          # The name of the production step
 NSTEPS=10                    # The number of times to repeat the production step
@@ -25,5 +27,5 @@ if $RUN_EQUIL; then
 fi
 
 if $RUN_PROD; then
-    $AMBERPROTOCOLS/utils/loop_step $PRMTOP $PROD_INPCRD $PROD_STEP $NSTEPS $NAME || exit 1
+    $AMBERPROTOCOLS/utils/loop_step $PRMTOP $PROD_INPCRD $PROD_STEP $NSTEPS $PROD_NAME || exit 1
 fi
