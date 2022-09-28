@@ -12,4 +12,4 @@ for prot in $(find "$PROTDIR" -name "*.in"); do
         -e "s/SOLUTE_CA_MASK/$SOLUTE_CA_MASK/" "$prot" >"$(basename $prot)"
 done
 cp $PROTDIR/Prod.mdin ./
-cp $AMBERPROTOCOLS/utils/run.sh ./
+cp $AMBERPROTOCOLS/utils/{run,loop_step,run_steps} ./

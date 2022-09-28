@@ -16,7 +16,7 @@ PRMTOP=system.prmtop         # Input topology
 INPCRD=system.inpcrd         # Input coordinates
 
 if $RUN_EQUIL; then
-    $AMBERPROTOCOLS/utils/run_steps $PRMTOP $INPCRD $NAME || exit 1
+    ./run_steps $PRMTOP $INPCRD $NAME || exit 1
 fi
 
 
@@ -27,5 +27,5 @@ STEP_IN=Prod.mdin            # The name of the production step
 NSTEPS=10                    # The number of times to repeat the production step
 
 if $RUN_PROD; then
-    $AMBERPROTOCOLS/utils/loop_step $PRMTOP $INPCRD $STEP_IN $NSTEPS $NAME || exit 1
+    ./loop_step $PRMTOP $INPCRD $STEP_IN $NSTEPS $NAME || exit 1
 fi
