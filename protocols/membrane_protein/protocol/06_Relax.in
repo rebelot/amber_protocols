@@ -23,7 +23,7 @@ NPgT 303K w/ restraints on protein CA (1000 ps / 100 fr)
   ntxo=2,
   restraint_wt=5.0,
   ntr=1,
-  restraint_wt=5,
+  restraint_wt=1,
   restraintmask='SOLUTE_CA_MASK'
  /
  /

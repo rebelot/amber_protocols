@@ -15,6 +15,7 @@ inpcrd=$INPCRD
 for ((istep=1; istep <= NSTEPS; istep++)); do
 	istep=$(printf "%0${#NSTEPS}d" "$istep")
 	if [[ -f "${NAME}_step_${istep}.ok" ]]; then
+        inpcrd="${NAME}_${istep}.rst7"
 		istep=$((istep + 1))
 		continue
 	fi
