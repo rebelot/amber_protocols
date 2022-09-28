@@ -15,17 +15,17 @@ NAME=MD_equil                # The basename for MD files
 PRMTOP=system.prmtop         # Input topology
 INPCRD=system.inpcrd         # Input coordinates
 
-
-RUN_PROD=false               # Whether to run the production MD
-PROD_NAME=MD_prod            # The basename for MD files
-PROD_INPCRD=last_step.rst7   # The input coordinates for the production run (usually the rst7 from the last equilibration step)
-PROD_STEP=Prod.mdin          # The name of the production step
-NSTEPS=10                    # The number of times to repeat the production step
-
 if $RUN_EQUIL; then
     $AMBERPROTOCOLS/utils/run_steps $PRMTOP $INPCRD $NAME || exit 1
 fi
 
+
+RUN_PROD=false               # Whether to run the production MD
+NAME=MD_prod                 # The basename for MD files
+INPCRD=last_step.rst7        # The input coordinates for the production run (usually the rst7 from the last equilibration step)
+STEP_IN=Prod.mdin            # The name of the production step
+NSTEPS=10                    # The number of times to repeat the production step
+
 if $RUN_PROD; then
-    $AMBERPROTOCOLS/utils/loop_step $PRMTOP $PROD_INPCRD $PROD_STEP $NSTEPS $PROD_NAME || exit 1
+    $AMBERPROTOCOLS/utils/loop_step $PRMTOP $INPCRD $STEP_IN $NSTEPS $NAME || exit 1
 fi
