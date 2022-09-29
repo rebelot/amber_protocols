@@ -28,12 +28,15 @@ cp -r $AMBERPROTOCOLS/protocols/protein/protocol protocol
 - Edit the loader script with the appropriate atom selection masks for your system.
   Note, the `&` character must be escaped, e.g.: `&` → `\&`
 
-- Run `load.sh` to load the protocol and the `run.sh` template in your working directory
+- Run `load.sh` to load the protocol and the `run.sh` template in your working directory.
+  This also loads the `loop_step` and `run_steps` runner scripts.
+
 ```bash
 ./protocol/load.sh
 ```
 
 - Edit the `run.sh` script with the appropriate parameters for your system:
+
 ```bash
 RUN_EQUIL=true               # Whether to run the equilibration steps
 NAME=MD_equil                # The basename for MD files
@@ -51,6 +54,25 @@ NSTEPS=10                    # The number of times to repeat the production step
 ```
 
 - Run the simulation
+
 ```bash
 sbatch run.sh
 ```
+
+## Utils
+
+### `loop_step: prmtop inpcrd step nrep basename`
+
+Repeat a step (`mdin`) `nrep` times,
+with the output of each run being used as the input for the next one.
+
+### `run_steps: prmtop inpcrd basename"`
+
+Launch a series of steps (`mdin`) in sequence,
+with the output of each step being used as the input for the next one.
+Step configurations are searched for in the current working directory, sorting
+any file with the `*.in` extension.
+
+### `rep_step: step rep`
+
+Copy a configuration (`mdin`) file `rep` times, adding a progressive suffix.
