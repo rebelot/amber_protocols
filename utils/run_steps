@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [[ $# -ne 3 ]]; then
-    echo "Usage: $0 prmtop inpcrd basename"
-    exit 1
+	echo "Usage: $0 prmtop inpcrd basename"
+	exit 1
 fi
 
 PRMTOP=$1
@@ -13,17 +13,14 @@ inpcrd=$INPCRD
 i=1
 for inp in $(find . -maxdepth 1 -name "*.in" | sort); do
 	istep=$(printf "%02d" $i)
-	if [[ -f "${NAME}_step_${istep}.ok" ]]; then
-        inpcrd="${NAME}_${istep}.rst7"
-        i=$((i + 1))
-		continue
+	if [[ ! -f "${NAME}_step_${istep}.ok" ]]; then
+		echo "Stage $istep: $inp - $(head -n 1 "$inp")"
+		grep -q 'imin\s*=\s*1' "$inp" && prog="$AMBERHOME/bin/pmemd.cuda_DPFP" || prog="$AMBERHOME/bin/pmemd.cuda"
+		$prog -O -i "$inp" -o "${NAME}_${istep}.mdout" -p $PRMTOP -c $inpcrd -r "${NAME}_${istep}.rst7" -ref "$inpcrd" -inf "${NAME}_${istep}.mdinfo" -x "${NAME}_${istep}.nc" || exit 1
+		touch "${NAME}_step_${istep}.ok"
+		echo "done: $(date)"
+		echo
 	fi
-	echo "Stage $istep: $inp - $(head -n 1 "$inp")"
-	grep -q 'imin\s*=\s*1' "$inp" && prog="$AMBERHOME/bin/pmemd.cuda_DPFP" || prog="$AMBERHOME/bin/pmemd.cuda"
-	$prog -O -i "$inp" -o "${NAME}_${istep}.mdout" -p $PRMTOP -c $inpcrd -r "${NAME}_${istep}.rst7" -ref "$inpcrd" -inf "${NAME}_${istep}.mdinfo" -x "${NAME}_${istep}.nc" || exit 1
-	touch "${NAME}_step_${istep}.ok"
-	echo "done: $(date)"
-	echo
 	inpcrd="${NAME}_${istep}.rst7"
 	i=$((i + 1))
 done
