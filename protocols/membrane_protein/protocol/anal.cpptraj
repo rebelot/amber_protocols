@@ -11,6 +11,7 @@ go
 clear all
 parm system.prmtop
 trajin *07.nc
+autoimage
 density out density.dat electron ":PE" ":PGR" ":OL,PA" ":WAT" "@Na+,Cl-"
 lipidscd liporder_PE_OL ":PE,OL" out lip_order_PE_OL.dat
 lipidscd liporder_PE_PA ":PE,PA" out lip_order_PE_PA.dat
