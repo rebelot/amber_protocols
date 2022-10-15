@@ -10,15 +10,25 @@
 
 module load amber/21_omp     # sets AMBERHOME and AMBERPROTOCOLS
 
+NREPLICAS=3
+BASENAME=replica
+
+
 RUN_EQUIL=true               # Whether to run the equilibration steps
 NAME=MD_equil                # The basename for MD files
 PRMTOP=system.prmtop         # Input topology
 INPCRD=system.inpcrd         # Input coordinates
 PROTDIR=$(pwd)               # Directory containing protocol *.in files
 
-if $RUN_EQUIL; then
-    ./run_steps $PRMTOP $INPCRD $PROTDIR $NAME || exit 1
-fi
+for ((i = 1; i <= NREPLICAS; i++)); do
+	irep=$(printf "%0${#NREPLICAS}d" "$i")
+	dir=${BASENAME}_${irep}
+	mkdir -p "$dir"
+
+    if $RUN_EQUIL; then
+        srun --gres=gpu:1 --job-name "$dir" ./run_steps $PRMTOP $INPCRD $PROTDIR $dir/$NAME &
+    fi
+done
 
 
 RUN_PROD=false               # Whether to run the production MD
@@ -27,6 +37,12 @@ INPCRD=last_step.rst7        # The input coordinates for the production run (usu
 STEP_IN=Prod.mdin            # The name of the production step
 NSTEPS=10                    # The number of times to repeat the production step
 
-if $RUN_PROD; then
-    ./loop_step $PRMTOP $INPCRD $STEP_IN $NSTEPS $NAME || exit 1
-fi
+for ((i = 1; i <= NREPLICAS; i++)); do
+	irep=$(printf "%0${#NREPLICAS}d" "$i")
+	dir=${BASENAME}_${irep}
+	mkdir -p "$dir"
+
+    if $RUN_PROD; then
+        srun --gres=gpu:1 --job-name "$dir" ./loop_step $PRMTOP $INPCRD $STEP_IN $NSTEPS $dir/$NAME
+    fi
+done

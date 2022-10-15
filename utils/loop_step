@@ -2,6 +2,11 @@
 
 if [[ $# -ne 5 ]]; then
 	echo "Usage: $0 prmtop inpcrd step nrep basename"
+	echo "prmtop:   <file> input topology"
+	echo "inpcrd:   <file> input coordinates"
+	echo "step:     <file> configuration file"
+	echo "nrep:     <num>  number of times step is repeated"
+	echo "basename: <name> output files basename"
 	exit 1
 fi
 

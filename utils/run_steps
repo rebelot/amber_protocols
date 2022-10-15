@@ -1,17 +1,22 @@
 #!/bin/bash
 
-if [[ $# -ne 3 ]]; then
-	echo "Usage: $0 prmtop inpcrd basename"
+if [[ $# -ne 4 ]]; then
+	echo "Usage: $0 prmtop inpcrd basename protdir"
+	echo "prmtop:   <file> input topology"
+	echo "inpcrd:   <file> input coordinates"
+	echo "protdir:  <dir>  protocol directory"
+	echo "basename: <name> output files basename"
 	exit 1
 fi
 
 PRMTOP=$1
 INPCRD=$2
-NAME=$3
+PROTDIR=$3
+NAME=$4
 
 inpcrd=$INPCRD
 i=1
-for inp in $(find . -maxdepth 1 -name "*.in" | sort); do
+for inp in $(find "$PROTDIR" -maxdepth 1 -name "*.in" | sort); do
 	istep=$(printf "%02d" $i)
 	if [[ ! -f "${NAME}_step_${istep}.ok" ]]; then
 		echo "Stage $istep: $inp - $(head -n 1 "$inp")"
