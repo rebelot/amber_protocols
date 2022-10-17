@@ -14,7 +14,7 @@ RUN_EQUIL=true               # Whether to run the equilibration steps
 NAME=MD_equil                # The basename for MD files
 PRMTOP=system.prmtop         # Input topology
 INPCRD=system.inpcrd         # Input coordinates
-PROTDIR=$(pwd)               # Directory containing protocol *.in files
+PROTDIR=.                    # Directory containing protocol *.in files
 
 if $RUN_EQUIL; then
     ./run_steps $PRMTOP $INPCRD $PROTDIR $NAME || exit 1
