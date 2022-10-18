@@ -1,15 +1,15 @@
 #!/bin/bash
 
 if [[ $# -ne 5 ]]; then
-	echo "Usage: $0 prmtop inpcrd basename protdir"
-	echo "prmtop:   <file> input topology"
-	echo "inpcrd:   <file> input coordinates"
-	echo "protdir:  <dir>  protocol directory"
-	echo "protglob: <string> glob pattern matching protocol files"
-	echo "basename: <name> output files basename"
-	echo
+    echo "Usage: $0 prmtop inpcrd basename protdir"
+    echo "prmtop:   <file> input topology"
+    echo "inpcrd:   <file> input coordinates"
+    echo "protdir:  <dir>  protocol directory"
+    echo "protglob: <string> glob pattern matching protocol files"
+    echo "basename: <name> output files basename"
+    echo
     echo "Note: Protocol files (mdin) are searched for in 'protdir' with 'ptrotglob' query and sorted"
-	exit 1
+    exit 1
 fi
 
 PRMTOP=$1
@@ -18,18 +18,29 @@ PROTDIR=$3
 PROTGLOB=$4
 NAME=$5
 
+mapfile infiles < <(find "$PROTDIR" -maxdepth 1 -name "$PROTGLOB" | sort)
+echo "processing step files:"
+printf "%s" "${infiles[@]}"
+echo
+
+padlen=${#infiles[@]}
 inpcrd=$INPCRD
 i=1
-for inp in $(find "$PROTDIR" -maxdepth 1 -name "$PROTGLOB" | sort); do
-	istep=$(printf "%02d" $i)
-	if [[ ! -f "${NAME}_step_${istep}.ok" ]]; then
-		echo "Stage $istep: $inp - $(head -n 1 "$inp")"
-		grep -q 'imin\s*=\s*1' "$inp" && prog="$AMBERHOME/bin/pmemd.cuda_DPFP" || prog="$AMBERHOME/bin/pmemd.cuda"
-		$prog -O -i "$inp" -o "${NAME}_${istep}.mdout" -p $PRMTOP -c $inpcrd -r "${NAME}_${istep}.rst7" -ref "$inpcrd" -inf "${NAME}_${istep}.mdinfo" -x "${NAME}_${istep}.nc" || exit 1
-		touch "${NAME}_step_${istep}.ok"
-		echo "done: $(date)"
-		echo
-	fi
-	inpcrd="${NAME}_${istep}.rst7"
-	i=$((i + 1))
+for inp in "${infiles[@]}"; do
+    istep=$(printf "%0${padlen}d" "$i")
+    if [[ ! -f "${NAME}_step_${istep}.ok" ]]; then
+        echo "Stage $istep: $inp - $(head -n 1 "$inp")"
+        if [[ -f "${NAME}_${istep}.rst7" ]]; then
+            inpcrd="${NAME}_${istep}.rst7"
+            echo "restarting from $inpcrd"
+        fi
+
+        grep -q 'imin\s*=\s*1' "$inp" && prog="$AMBERHOME/bin/pmemd.cuda_DPFP" || prog="$AMBERHOME/bin/pmemd.cuda"
+        "$prog" -O -i "$inp" -o "${NAME}_${istep}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${istep}.rst7" -ref "$inpcrd" -inf "${NAME}_${istep}.mdinfo" -x "${NAME}_${istep}.nc" || exit 1
+        touch "${NAME}_step_${istep}.ok"
+        echo "done: $(date)"
+        echo
+    fi
+    inpcrd="${NAME}_${istep}.rst7"
+    i=$((i + 1))
 done

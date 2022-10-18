@@ -1,13 +1,13 @@
 #!/bin/bash
 
 if [[ $# -ne 5 ]]; then
-	echo "Usage: $0 prmtop inpcrd step nrep basename"
-	echo "prmtop:   <file> input topology"
-	echo "inpcrd:   <file> input coordinates"
-	echo "step:     <file> configuration file"
-	echo "nrep:     <num>  number of times step is repeated"
-	echo "basename: <name> output files basename"
-	exit 1
+    echo "Usage: $0 prmtop inpcrd step nrep basename"
+    echo "prmtop:   <file> input topology"
+    echo "inpcrd:   <file> input coordinates"
+    echo "step:     <file> configuration file"
+    echo "nrep:     <num>  number of times step is repeated"
+    echo "basename: <name> output files basename"
+    exit 1
 fi
 
 PRMTOP=$1
@@ -16,16 +16,21 @@ STEP_IN=$3
 NSTEPS=$4
 NAME=$5
 
+padlen=${#NSTEPS}
 inpcrd=$INPCRD
 for ((i = 1; i <= NSTEPS; i++)); do
-	istep=$(printf "%0${#NSTEPS}d" "$i")
-	if [[ ! -f "${NAME}_step_${istep}.ok" ]]; then
-		echo "Step $istep"
-		grep -q 'imin\s*=\s*1' $STEP_IN && prog="$AMBERHOME/bin/pmemd.cuda_DPFP" || prog="$AMBERHOME/bin/pmemd.cuda"
-		$prog -O -i "$STEP_IN" -o "${NAME}_${istep}.mdout" -p $PRMTOP -c $inpcrd -r "${NAME}_${istep}.rst7" -ref "$inpcrd" -inf "${NAME}_${istep}.mdinfo" -x "${NAME}_${istep}.nc" || exit 1
-		touch "${NAME}_step_${istep}.ok"
-		echo "done: $(date)"
-		echo
-	fi
-	inpcrd="${NAME}_${istep}.rst7"
+    istep=$(printf "%0${padlen}d" "$i")
+    if [[ ! -f "${NAME}_step_${istep}.ok" ]]; then
+        echo "Step $istep"
+        if [[ -f "${NAME}_${istep}.rst7" ]]; then
+            inpcrd="${NAME}_${istep}.rst7"
+            echo "restarting from $inpcrd"
+        fi
+        grep -q 'imin\s*=\s*1' "$STEP_IN" && prog="$AMBERHOME/bin/pmemd.cuda_DPFP" || prog="$AMBERHOME/bin/pmemd.cuda"
+        "$prog" -O -i "$STEP_IN" -o "${NAME}_${istep}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${istep}.rst7" -ref "$inpcrd" -inf "${NAME}_${istep}.mdinfo" -x "${NAME}_${istep}.nc" || exit 1
+        touch "${NAME}_step_${istep}.ok"
+        echo "done: $(date)"
+        echo
+    fi
+    inpcrd="${NAME}_${istep}.rst7"
 done
