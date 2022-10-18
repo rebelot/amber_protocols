@@ -26,10 +26,10 @@ cp -r $AMBERPROTOCOLS/protocols/protein/protocol protocol
 2. (optional) If needed, edit the protocol files
 
 3. Edit the loader script with the appropriate atom selection masks for your system.
-  Note, the `&` character must be escaped, e.g.: `&` → `\&`
+   Note, the `&` character must be escaped, e.g.: `&` → `\&`
 
 4. Run `load.sh` to load the protocol and the `run.sh` template in your working directory.
-  This also loads the `loop_step` and `run_steps` runner scripts.
+   This also loads the `loop_step` and `run_steps` runner scripts.
 
 ```bash
 ./protocol/load.sh
