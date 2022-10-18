@@ -15,9 +15,10 @@ NAME=MD_equil                # The basename for MD files
 PRMTOP=system.prmtop         # Input topology
 INPCRD=system.inpcrd         # Input coordinates
 PROTDIR=.                    # Directory containing protocol *.in files
+PROTGLOB='*.in'              # Glob pattern matching MD input files (mdin)
 
 if $RUN_EQUIL; then
-    ./run_steps $PRMTOP $INPCRD $PROTDIR $NAME || exit 1
+    ./run_steps $PRMTOP $INPCRD $PROTDIR $PROTGLOB $NAME || exit 1
 fi
 
 

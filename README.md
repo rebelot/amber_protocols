@@ -43,6 +43,7 @@ NAME=MD_equil                # The basename for MD files
 PRMTOP=system.prmtop         # Input topology
 INPCRD=system.inpcrd         # Input coordinates
 PROTDIR=.                    # Directory containing protocol *.in files
+PROTGLOB='*.in'              # Glob pattern matching MD input files (mdin)
 
 ...
 
@@ -71,6 +72,7 @@ NAME=$REPLICA_DIR/MD_equil                # The basename for MD files
 PRMTOP=system.prmtop         # Input topology
 INPCRD=system.inpcrd         # Input coordinates
 PROTDIR=.                    # Directory containing protocol *.in files
+PROTGLOB='*.in'              # Glob pattern matching MD input files (mdin)
 
 ...
 
@@ -102,12 +104,12 @@ BASENAME=replica      # Basename of replica directory
 Repeat a step (`mdin`) `nrep` times,
 with the output of each run being used as the input for the next one.
 
-### `run_steps: prmtop inpcrd basename"`
+### `run_steps: prmtop inpcrd protdir protglob basename"`
 
 Launch a series of steps (`mdin`) in sequence,
 with the output of each step being used as the input for the next one.
-Step configurations are searched for in the current working directory, sorting
-any file with the `*.in` extension.
+Step configurations are searched for in `protdir` directory, sorting
+any file matching the `protglob` pattern.
 
 ### `rep_step: step rep`
 

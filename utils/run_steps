@@ -1,22 +1,26 @@
 #!/bin/bash
 
-if [[ $# -ne 4 ]]; then
+if [[ $# -ne 5 ]]; then
 	echo "Usage: $0 prmtop inpcrd basename protdir"
 	echo "prmtop:   <file> input topology"
 	echo "inpcrd:   <file> input coordinates"
 	echo "protdir:  <dir>  protocol directory"
+	echo "protglob: <string> glob pattern matching protocol files"
 	echo "basename: <name> output files basename"
+	echo
+    echo "Note: Protocol files (mdin) are searched for in 'protdir' with 'ptrotglob' query and sorted"
 	exit 1
 fi
 
 PRMTOP=$1
 INPCRD=$2
 PROTDIR=$3
-NAME=$4
+PROTGLOB=$4
+NAME=$5
 
 inpcrd=$INPCRD
 i=1
-for inp in $(find "$PROTDIR" -maxdepth 1 -name "*.in" | sort); do
+for inp in $(find "$PROTDIR" -maxdepth 1 -name "$PROTGLOB" | sort); do
 	istep=$(printf "%02d" $i)
 	if [[ ! -f "${NAME}_step_${istep}.ok" ]]; then
 		echo "Stage $istep: $inp - $(head -n 1 "$inp")"
