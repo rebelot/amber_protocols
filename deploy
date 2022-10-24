@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# manual deployment of amber_protocols on xlence
+# using git-hooks might be an overkill
+
+if [[ `hostname` != xlence.disfeb.unimi.it ]]; then
+    ssh xlence 'cd /sw/amber/amber_protocols && git pull'
+fi
