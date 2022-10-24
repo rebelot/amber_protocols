@@ -1,5 +1,17 @@
 # amber_protocols
 
+<!--toc:start-->
+- [amber_protocols](#amberprotocols)
+  - [Resources](#resources)
+  - [Example workflow](#example-workflow)
+    - [Run replicas](#run-replicas)
+      - [Restart individual replicas](#restart-individual-replicas)
+  - [Utils](#utils)
+    - [`loop_step: prmtop inpcrd step nrep basename`](#loopstep-prmtop-inpcrd-step-nrep-basename)
+    - [`run_steps: prmtop inpcrd protdir protglob basename"`](#runsteps-prmtop-inpcrd-protdir-protglob-basename)
+    - [`rep_step: step rep`](#repstep-step-rep)
+<!--toc:end-->
+
 Repository of computational biochemistry protocols for the Amber package
 
 Set up `AMBERPROTOCOLS` environment variable for ease of use
@@ -97,6 +109,13 @@ BASENAME=replica      # Basename of replica directory
 ./run_replica.sh
 ```
 
+#### Restart individual replicas
+
+```bash
+# re-launch job for replica_3
+env REPLICA_DIR=replica_3 sbatch run.sh
+```
+
 ## Utils
 
 ### `loop_step: prmtop inpcrd step nrep basename`
@@ -114,3 +133,4 @@ any file matching the `protglob` pattern.
 ### `rep_step: step rep`
 
 Copy a configuration (`mdin`) file `rep` times, adding a progressive suffix.
+Useful to repeat the same step multiple times using `run_steps`.
