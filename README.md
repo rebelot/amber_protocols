@@ -8,9 +8,9 @@
     - [Run replicas](#run-replicas)
       - [Restart individual replicas](#restart-individual-replicas)
   - [Utils](#utils)
-    - [`loop_step: prmtop inpcrd step nrep basename`](#loopstep-prmtop-inpcrd-step-nrep-basename)
-    - [`run_steps: prmtop inpcrd protdir protglob basename"`](#runsteps-prmtop-inpcrd-protdir-protglob-basename)
-    - [`rep_step: step rep`](#repstep-step-rep)
+    - [`loop_step`](#loopstep)
+    - [`run_steps`](#runsteps)
+    - [`rep_step`](#repstep)
 <!--toc:end-->
 
 Repository of computational biochemistry protocols for the Amber package
@@ -139,19 +139,25 @@ To extend replicas, modify `run.sh` as explained in [Restart/Extend simulations]
 
 ## Utils
 
-### `loop_step: prmtop inpcrd step nrep basename`
+### `loop_step`
+
+`loop_step: prmtop inpcrd step nrep basename`
 
 Repeat a step (`mdin`) `nrep` times,
 with the output of each run being used as the input for the next one.
 
-### `run_steps: prmtop inpcrd protdir protglob basename"`
+### `run_steps`
+
+`run_steps: prmtop inpcrd protdir protglob basename`
 
 Launch a series of steps (`mdin`) in sequence,
 with the output of each step being used as the input for the next one.
 Step configurations are searched for in `protdir` directory, sorting
 any file matching the `protglob` pattern.
 
-### `rep_step: step rep`
+### `rep_step`
+
+`rep_step: step rep`
 
 Copy a configuration (`mdin`) file `rep` times, adding a progressive suffix.
 Useful to repeat the same step multiple times using `run_steps`.
