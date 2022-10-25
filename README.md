@@ -8,9 +8,9 @@
     - [Run replicas](#run-replicas)
       - [Restart individual replicas](#restart-individual-replicas)
   - [Utils](#utils)
-    - [`loop_step`](#loopstep)
-    - [`run_steps`](#runsteps)
-    - [`rep_step`](#repstep)
+    - [`loop_step`](#loop_step)
+    - [`run_steps`](#run_steps)
+    - [`rep_step`](#rep_step)
 <!--toc:end-->
 
 Repository of computational biochemistry protocols for the Amber package
@@ -135,7 +135,7 @@ BASENAME=replica      # Basename of replica directory
 env REPLICA_DIR=replica_3 sbatch run.sh
 ```
 
-To extend replicas, modify `run.sh` as explained in [Restart/Extend simulations](restartextend-simulations).
+To extend replicas, modify `run.sh` as explained in [Restart/Extend simulations](#restartextend-simulations).
 
 ## Utils
 
