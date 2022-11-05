@@ -8,9 +8,9 @@
     - [Run replicas](#run-replicas)
       - [Restart individual replicas](#restart-individual-replicas)
   - [Utils](#utils)
-    - [`loop_step`](#loop_step)
-    - [`run_steps`](#run_steps)
-    - [`rep_step`](#rep_step)
+    - [`loop_step`](#loopstep)
+    - [`run_steps`](#runsteps)
+    - [`rep_step`](#repstep)
 <!--toc:end-->
 
 Repository of computational biochemistry protocols for the Amber package
@@ -95,11 +95,14 @@ to point to the last step of the previous simulation (you can prepend absolute/r
 ### Run replicas
 
 5. Edit the `run.sh` script with the appropriate parameters for your system:
-   use the `$REPLICA_DIR` env variable to specify paths relative to each replica.
+   prepend a reference to the `$REPLICA_DIR` environment variable
+   to indicate input/output paths that should be relative to each replica
+   (i.e., output base `NAME` and `INPCRD` input coordinates).
+   The `$REPLICA_DIR` variable is set automatically by `run_replica.sh` (see the next step below).
 
 ```bash
 RUN_EQUIL=true               # Whether to run the equilibration steps
-NAME=$REPLICA_DIR/MD_equil                # The basename for MD files
+NAME=$REPLICA_DIR/MD_equil      # HERE The basename for MD files
 PRMTOP=system.prmtop         # Input topology
 INPCRD=system.inpcrd         # Input coordinates
 PROTDIR=.                    # Directory containing protocol *.in files
@@ -108,21 +111,29 @@ PROTGLOB='*.in'              # Glob pattern matching MD input files (mdin)
 ...
 
 RUN_PROD=false               # Whether to run the production MD
-NAME=$REPLICA_DIR/MD_prod                 # The basename for MD files
-INPCRD=$REPLICA_DIR/last_step.rst7        # The input coordinates for the production run (usually the rst7 from the last equilibration step)
+NAME=$REPLICA_DIR/MD_prod       # The basename for MD files
+INPCRD=$REPLICA_DIR/last_step.rst7  # The input coordinates for the production run (usually the rst7 from the last equilibration step)
 STEP_IN=Prod.mdin            # The name of the production step
 NSTEPS=10                    # The number of times to repeat the production step
 
 ```
 
-6. Edit the `run_replica.sh` script
+6. Copy the `run_replica.sh` script into your working directory
+
+```bash
+cp $AMBERPROTOCOLS/utils/run_replica.sh .
+```
+
+7. Edit the local copy of `run_replica.sh` with the desired parameters:
 
 ```bash
 NREPLICAS=6           # Number of replicas
 BASENAME=replica      # Basename of replica directory
 ```
 
-7. Run the simulations in parallel
+8. Run the simulations in parallel.
+   The script will handle the creation of directories for each replica if they don't exist
+   and will spawn a job for each replicat running the `run.sh` with the appropriate values of `$REPLICA_DIR`.
 
 ```bash
 ./run_replica.sh
@@ -136,6 +147,8 @@ env REPLICA_DIR=replica_3 sbatch run.sh
 ```
 
 To extend replicas, modify `run.sh` as explained in [Restart/Extend simulations](#restartextend-simulations).
+To add replicas, simply add to `NREPLICAS` within the `run_replica.sh` script file
+Completed jobs will be launched but will terminate immediately as long as checkpoint (`.ok`) files exit.
 
 ## Utils
 
