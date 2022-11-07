@@ -23,7 +23,8 @@ echo "processing step files:"
 printf "%s" "${infiles[@]}"
 echo
 
-padlen=${#infiles[@]}
+nsteps=${#infiles[@]}
+padlen=${#nsteps}
 inpcrd=$INPCRD
 i=1
 for inp in "${infiles[@]}"; do
