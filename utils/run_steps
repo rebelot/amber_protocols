@@ -18,7 +18,7 @@ PROTDIR=$3
 PROTGLOB=$4
 NAME=$5
 
-mapfile infiles < <(find "$PROTDIR" -maxdepth 1 -name "$PROTGLOB" | sort)
+mapfile -t infiles < <(find "$PROTDIR" -maxdepth 1 -name "$PROTGLOB" | sort)
 echo "processing step files:"
 printf "%s" "${infiles[@]}"
 echo
