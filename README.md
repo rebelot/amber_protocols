@@ -20,6 +20,12 @@ Set up `AMBERPROTOCOLS` environment variable for ease of use
 ```bash
 export AMBERPROTOCOLS=<path-to-this-repo>
 ```
+Protocols consist of various scripts and configuration files for running and analyzing molecular dynamics with Amber.
+Protocols are organized by macro-area within the `protocol` directory:
+
+* `protein`: protocols for simple protein-solvent simulations.
+* `membrane_protein`: protocols for protein simulations with lipid membranes.
+* `solvate`: protocols to solvate system binding sites using RISM.
 
 ## Resources
 
@@ -30,19 +36,20 @@ export AMBERPROTOCOLS=<path-to-this-repo>
 
 ## Example workflow
 
-1. Copy the desired protocol folder to your working directory
+1. Copy the desired protocol folder to your working directory.
 
 ```bash
-cp -r $AMBERPROTOCOLS/protocols/protein/protocol protocol
+cp -r $AMBERPROTOCOLS/protocols/protein/protocol .
 ```
 
 2. (optional) If needed, edit the protocol files
 
-3. Edit the loader script with the appropriate atom selection masks for your system.
-   Note, the `&` character must be escaped, e.g.: `&` → `\&`
+3. Edit the loader script `load.sh` with the appropriate atom selection masks for your system.
+   Atom selections are needed to specify which atoms should be restrained during the relaxation steps.
+   Note, the `&` character must be escaped, e.g.: `&` → `\&`.
 
 4. Run `load.sh` to load the protocol and the `run.sh` template in your working directory.
-   This also loads the `loop_step` and `run_steps` runner scripts.
+   This also creates a local copy of the `loop_step` and `run_steps` runner scripts.
 
 ```bash
 ./protocol/load.sh
@@ -115,7 +122,6 @@ NAME=$REPLICA_DIR/MD_prod       # The basename for MD files
 INPCRD=$REPLICA_DIR/last_step.rst7  # The input coordinates for the production run (usually the rst7 from the last equilibration step)
 STEP_IN=Prod.mdin            # The name of the production step
 NSTEPS=10                    # The number of times to repeat the production step
-
 ```
 
 6. Copy the `run_replica.sh` script into your working directory
@@ -133,7 +139,7 @@ BASENAME=replica      # Basename of replica directory
 
 8. Run the simulations in parallel.
    The script will handle the creation of directories for each replica if they don't exist
-   and will spawn a job for each replicat running the `run.sh` with the appropriate values of `$REPLICA_DIR`.
+   and will spawn a job for each replica by launching the `run.sh` script with the appropriate values of `$REPLICA_DIR`.
 
 ```bash
 ./run_replica.sh
