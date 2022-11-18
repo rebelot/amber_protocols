@@ -31,10 +31,10 @@ for inp in "${infiles[@]}"; do
     istep=$(printf "%0${padlen}d" "$i")
     if [[ ! -f "${NAME}_step_${istep}.ok" ]]; then
         echo "Stage $istep: $inp - $(head -n 1 "$inp")"
-        if [[ -f "${NAME}_${istep}.rst7" ]]; then
-            inpcrd="${NAME}_${istep}.rst7"
-            echo "restarting from $inpcrd"
-        fi
+        # if [[ -f "${NAME}_${istep}.rst7" ]]; then
+        #     inpcrd="${NAME}_${istep}.rst7"
+        #     echo "restarting from $inpcrd"
+        # fi
 
         grep -q 'imin\s*=\s*1' "$inp" && prog="$AMBERHOME/bin/pmemd.cuda_DPFP" || prog="$AMBERHOME/bin/pmemd.cuda"
         "$prog" -O -i "$inp" -o "${NAME}_${istep}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${istep}.rst7" -ref "$inpcrd" -inf "${NAME}_${istep}.mdinfo" -x "${NAME}_${istep}.nc" || exit 1
