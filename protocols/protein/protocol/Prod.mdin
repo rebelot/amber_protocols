@@ -23,3 +23,7 @@ Production step (10 ns / 100 fr)
   ntp=3,
   barostat=2,
  /
+ &ewald
+  netfrc = 0,
+  skin_permit = 0.75,
+ /
