@@ -6,7 +6,6 @@ Re-minimization w/ restraints on backbone
   ntx=1, 
   ntwe=0,
   ntwr=500,
-  ntwx=50,           ! Write coordinates every ntwx steps
   ntpr=50,
   ntc=1,
   ntf=1,

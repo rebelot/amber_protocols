@@ -6,7 +6,6 @@ Initial minimization
   ncyc=500,            ! The first 20 cycles will utilize the steepest descent algorithm before shifting to the conjugate gradient algorithm for the remaining cycles. 
   ntx=1,               ! The coordinates but not velocities are read formatted from the coordinate file provided. 
   ntwr=500,            ! The amount of steps in which "restrt" files are written.
-  ntwx=50              ! Write coordinates every ntwx steps
   ntpr=50,             ! The amount of steps in which "mdout" and "mdinfo" files are written.
   ntc=1,               ! No SHAKE
   ntf=1,               ! Complete force evaluation

@@ -9,7 +9,6 @@ Thorough minimization w/ restraints on protein heavy atoms
   ntc=1,        ! No SHAKE  (usually ntf == ntc)
   ntpr=50,      ! Print to mdout every ntpr steps
   ntwr=2000,    ! Write a restart file every ntwr steps
-  ntwx=500      ! Write coordinates every ntwx steps
   cut=10.0,     ! Nonbonded cutoff in Angstroms
   ntr=1,
   restraint_wt=50.0,
