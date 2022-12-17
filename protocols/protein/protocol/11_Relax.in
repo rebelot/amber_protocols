@@ -20,7 +20,6 @@ NPT Relaxation w/ no restraints (1000 ps / 100 fr)
   ntb=2,
   ntp=1, 
   barostat=2,
-  ntr=1,
   ioutfm=1,
   ntxo=2,
  /
