@@ -20,7 +20,7 @@ NVT Heating 100 K w/ restraints on solute (10 ps / 50 fr)
   ntb = 1,
   ntp = 0,
   ntr=1,
-  restraintmask=SOLUTE_MASK,
+  restraintmask='SOLUTE_MASK',
   restraint_wt=100.0
   nmropt=1,
   ioutfm=1,

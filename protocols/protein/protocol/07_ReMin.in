@@ -13,7 +13,7 @@ Re-minimization w/ restraints on backbone
   ntp=0,
   cut=10.0,   
   ntr=1,
-  restraintmask=SOLUTE_BACKBONE_MASK,
+  restraintmask='SOLUTE_BACKBONE_MASK',
   restraint_wt=10.
   ioutfm=1,
   ntxo=2,

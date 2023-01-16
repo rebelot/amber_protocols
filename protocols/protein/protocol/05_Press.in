@@ -21,7 +21,7 @@
   barostat = 1,     ! Berendsen barostat.
   taup=2.0,         ! Pressure relaxation time (ps)
   ntr=1,
-  restraintmask=SOLUTE_MASK,
+  restraintmask='SOLUTE_MASK',
   restraint_wt=100.
   ioutfm=1,
   ntxo=2,

@@ -30,3 +30,7 @@ ambpdb -p system.prmtop -c system.inpcrd -ext -conect > system.pdb
 ambpdb -p system.prmtop -c md_equil_07.rst7 -ext -conect > system_eq.pdb
 ```
 
+Amber topology files (`parmtop`) can also be used, but this might require a few tweaks:
+- assign secondary structure elements with: `dss polymer.protein`
+- remove bond between WAT H1-H2: `unbond r. WAT & n. H1, r. WAT & n. H2`
+- when loading coordinates using restart files (`rst7`/`netCDF`), use: `load_traj coords.rst7, format=nc`

@@ -20,7 +20,7 @@
   ntp = 1,          ! Constant pressure.
   barostat = 2,     ! Monte Carlo barostat.
   ntr=1,
-  restraintmask=SOLUTE_MASK,
+  restraintmask='SOLUTE_MASK',
   restraint_wt=10.
   ioutfm=1,
   ntxo=2,

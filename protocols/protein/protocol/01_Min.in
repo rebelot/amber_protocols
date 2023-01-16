@@ -13,7 +13,7 @@ Initial minimization
   ntp=0,               ! There is no pressure scaling.
   cut=10.0,            ! The non-bonded cutoff is 10.0 Angstroms.
   ntr=1,               ! Use restraints.
-  restraintmask= SOLUTE_MASK, ! Restrain the solute
+  restraintmask='SOLUTE_MASK', ! Restrain the solute
   restraint_wt=100,    ! 100  Positional restraint is 100 kcal/mol*Ang^-2.
   ioutfm=1,            ! The format of the coordinate and velocity trajectory files written as binary NetCDF.
   ntxo=2,              ! The "restrt" file format is NetCDF.
