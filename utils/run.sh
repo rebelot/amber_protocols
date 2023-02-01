@@ -8,11 +8,14 @@
 
 # export CUDA_VISIBLE_DEVICES=0
 
-module load amber/21_omp # sets AMBERHOME and AMBERPROTOCOLS
+module load amber    # sets AMBERHOME and AMBERPROTOCOLS
+
+PRMTOP=system.prmtop # Input topology
+
+# EQUILIBRATION SETTINGS
 
 RUN_EQUIL=true       # Whether to run the equilibration steps
 NAME=MD_equil        # The basename for MD files
-PRMTOP=system.prmtop # Input topology
 INPCRD=system.inpcrd # Input coordinates
 PROTDIR=.            # Directory containing protocol *.in files
 PROTGLOB='*.in'      # Glob pattern matching MD input files (mdin)
@@ -20,6 +23,8 @@ PROTGLOB='*.in'      # Glob pattern matching MD input files (mdin)
 if "$RUN_EQUIL"; then
     ./run_steps "$PRMTOP" "$INPCRD" "$PROTDIR" "$PROTGLOB" "$NAME" || exit 1
 fi
+
+# PRODUCTION SETTINGS
 
 RUN_PROD=false        # Whether to run the production MD
 NAME=MD_prod          # The basename for MD files

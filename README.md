@@ -57,24 +57,6 @@ cp -r $AMBERPROTOCOLS/protocols/protein/protocol .
 
 5. Edit the `run.sh` script with the appropriate parameters for your system:
 
-```bash
-RUN_EQUIL=true               # Whether to run the equilibration steps
-NAME=MD_equil                # The basename for MD files
-PRMTOP=system.prmtop         # Input topology
-INPCRD=system.inpcrd         # Input coordinates
-PROTDIR=.                    # Directory containing protocol *.in files
-PROTGLOB='*.in'              # Glob pattern matching MD input files (mdin)
-
-...
-
-RUN_PROD=false               # Whether to run the production MD
-NAME=MD_prod                 # The basename for MD files
-INPCRD=last_step.rst7        # The input coordinates for the production run (usually the rst7 from the last equilibration step)
-STEP_IN=Prod.mdin            # The name of the production step
-NSTEPS=010                   # The number of times to repeat the production step
-
-```
-
 6. Run the simulation
 
 ```bash
