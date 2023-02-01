@@ -23,25 +23,17 @@ echo "processing step files:"
 printf "%s" "${infiles[@]}"
 echo
 
-nsteps=${#infiles[@]}
-padlen=${#nsteps}
 inpcrd=$INPCRD
-i=1
 for inp in "${infiles[@]}"; do
-    istep=$(printf "%0${padlen}d" "$i")
-    if [[ ! -f "${NAME}_step_${istep}.ok" ]]; then
-        echo "Stage $istep: $inp - $(head -n 1 "$inp")"
-        # if [[ -f "${NAME}_${istep}.rst7" ]]; then
-        #     inpcrd="${NAME}_${istep}.rst7"
-        #     echo "restarting from $inpcrd"
-        # fi
+    step=${inp%.*}
+    if [[ ! -f "${NAME}_step_${step}.ok" ]]; then
+        echo "Stage $step: $inp - $(head -n 1 "$inp")"
 
         grep -q 'imin\s*=\s*1' "$inp" && prog="$AMBERHOME/bin/pmemd.cuda_DPFP" || prog="$AMBERHOME/bin/pmemd.cuda"
-        "$prog" -O -i "$inp" -o "${NAME}_${istep}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${istep}.rst7" -ref "$inpcrd" -inf "${NAME}_${istep}.mdinfo" -x "${NAME}_${istep}.nc" || exit 1
-        touch "${NAME}_step_${istep}.ok"
+        "$prog" -O -i "$inp" -o "${NAME}_${step}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${step}.rst7" -ref "$inpcrd" -inf "${NAME}_${step}.mdinfo" -x "${NAME}_${step}.nc" || exit 1
+        touch "${NAME}_step_${step}.ok"
         echo "done: $(date)"
         echo
     fi
-    inpcrd="${NAME}_${istep}.rst7"
-    i=$((i + 1))
+    inpcrd="${NAME}_${step}.rst7"
 done
