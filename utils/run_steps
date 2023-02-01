@@ -20,12 +20,12 @@ NAME=$5
 
 mapfile -t infiles < <(find "$PROTDIR" -maxdepth 1 -name "$PROTGLOB" | sort)
 echo "processing step files:"
-printf "%s" "${infiles[@]}"
+printf "%s\n" "${infiles[@]}"
 echo
 
 inpcrd=$INPCRD
 for inp in "${infiles[@]}"; do
-    step=${inp%.*}
+    step=$(basename "${inp%.*}")
     if [[ ! -f "${NAME}_step_${step}.ok" ]]; then
         echo "Stage $step: $inp - $(head -n 1 "$inp")"
 
