@@ -20,7 +20,7 @@ Production step (10 ns / 100 fr)
   ioutfm=1,
   iwrap=1,
   ntxo=2,
-  ntp=3,
+  ntp=1,
   barostat=2,
  /
  &ewald
