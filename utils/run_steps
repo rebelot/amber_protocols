@@ -9,6 +9,9 @@ if [[ $# -ne 5 ]]; then
     echo "basename: <name> output files basename"
     echo
     echo "Note: Protocol files (mdin) are searched for in 'protdir' with 'ptrotglob' query and sorted"
+    echo "Example output:"
+    echo "with <basename> = 'myMDEquil' and protocol file <protdir>/01_Min.in"
+    echo "myMDEquil_01_Min.{rst7,mdout,nc,mdinfo} myMDEquil_step_01_Min.ok"
     exit 1
 fi
 
