@@ -71,7 +71,7 @@ RUN_PROD=false               # Whether to run the production MD
 NAME=MD_prod                 # The basename for MD files
 INPCRD=last_step.rst7        # The input coordinates for the production run (usually the rst7 from the last equilibration step)
 STEP_IN=Prod.mdin            # The name of the production step
-NSTEPS=10                    # The number of times to repeat the production step
+NSTEPS=010                   # The number of times to repeat the production step
 
 ```
 
@@ -98,6 +98,9 @@ The easiest solution to this is to add a suffix to `NAME` (e.g., `my_md` ⇒ `my
 or to run the simulation in a separate folder. With this approach, `INPCRD` variable should now be modified
 to point to the last step of the previous simulation (you can prepend absolute/relative path if needed) and
 `NSTEPS` should now correspond to the number of steps **_to be added_** to the previous steps.
+
+If you plan on extending your simulation, it is advised to 0-pad `NSTEPS` in
+advance, e.g. using `NSTEPS=050` will allow restarting up to step 999.
 
 ### Run replicas
 
