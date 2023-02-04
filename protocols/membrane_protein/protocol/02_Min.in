@@ -7,8 +7,6 @@ Thorough minimization w/ restraints on protein heavy atoms
       ntpr=50,
     !Restraints
       ntr=1,
-      restraint_wt=100.0,
-      restraintmask='(PROTEIN_MASK) | (LIGAND_MASK)',
     !Minimization
       maxcyc=10000,
       ncyc=5000,
@@ -19,3 +17,8 @@ Thorough minimization w/ restraints on protein heavy atoms
     !Potential
       cut=10.0,
   /
+Solute restraints
+100
+RES SOLUTE_RES_GROUP
+END
+END

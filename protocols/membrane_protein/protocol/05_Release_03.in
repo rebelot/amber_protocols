@@ -10,7 +10,7 @@ NPgT 300K w/ restraints on protein backbone (1000 ps / 1000 fr)
       iwrap=1,
     !Restraints
       ntr=1,
-      restraintmask='(LIGAND_MASK) | ((PROTEIN_MASK) & (@CA,N,C))',
+      restraintmask='BACKBONE_MASK',
       restraint_wt=1
     !Minimization
     !MD
