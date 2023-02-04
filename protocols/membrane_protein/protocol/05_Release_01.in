@@ -27,10 +27,10 @@ NPgT 300K w/ restraints on solute (1000 ps / 1000 fr)
     !Potential
       ntf=2,
       cut=10.0,
- /
- &ewald
-  skinnb=3.0, ! Increase skinnb to avoid skinnb errors
- /
+  /
+  &ewald
+    skinnb=3.0, ! Increase skinnb to avoid skinnb errors
+  /
 Solute restraints
 10
 RES SOLUTE_RES_GROUP
