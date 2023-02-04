@@ -2,16 +2,17 @@
 
 PROTDIR=protocol
 
-LIPID_MASK=":OL,PA,PC,PE,PGR"
-SOLUTE_HEAVY_MASK=":1-417 \& !@H="
-SOLUTE_BACKBONE_MASK="@CA,C,N"
-SOLUTE_CA_MASK="@CA"
+PROTEIN_MASK=":1-417"
+LIGAND_MASK=""
+SOLUTE_RES_GROUP="1 417"
+MEMBRANE_RES_GROUP="418 1428"
 
 for prot in $(find "$PROTDIR" -name "*.in"); do
-    sed -e "s/LIPID_MASK/$LIPID_MASK/" \
-        -e "s/SOLUTE_HEAVY_MASK/$SOLUTE_HEAVY_MASK/" \
-        -e "s/SOLUTE_BACKBONE_MASK/$SOLUTE_BACKBONE_MASK/" \
-        -e "s/SOLUTE_CA_MASK/$SOLUTE_CA_MASK/" "$prot" >"$(basename $prot)"
+    sed -e "s/PROTEIN_MASK/$PROTEIN_MASK/" \
+        -e "s/LIGAND_MASK/$LIGAND_MASK/" \
+        -e "s/SOLUTE_RES_GROUP/$SOLUTE_RES_GROUP/" \
+        -e "s/MEMBRANE_RES_GROUP/$MEMBRANE_RES_GROUP/" \
+        "$prot" >"$(basename "$prot")"
 done
-cp $PROTDIR/Prod.mdin ./
-cp $AMBERPROTOCOLS/utils/{run.sh,loop_step,run_steps} ./
+cp "$PROTDIR"/Prod.mdin ./
+cp "$AMBERPROTOCOLS"/utils/{run.sh,loop_step,run_steps} ./

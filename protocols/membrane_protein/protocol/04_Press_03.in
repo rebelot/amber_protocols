@@ -1,9 +1,9 @@
-NVT heating 0K - 300K in 150 ps + 50 ps maintenance w/ restraints on membrane and protein heavy atoms (200 ps / 200 fr)
+NPgT 300K w/ restraints on solute (2000 ps / 2000 fr)
   &cntrl
     !General 
-      nmropt=1,
     !Input
-      ntx=1,
+      ntx=5,
+      irest=1,
     !Output
       ntpr=500,
       ntwx=500,
@@ -12,13 +12,15 @@ NVT heating 0K - 300K in 150 ps + 50 ps maintenance w/ restraints on membrane an
       ntr=1,
     !Minimization
     !MD
-      nstlim=100000,
+      nstlim=1000000,
       dt=0.002,
     !Temperature
       ntt=3,
       gamma_ln=1.0,
       ig=-1,
     !Pressure
+      ntp=3,
+      csurften=3,
     !SHAKE
       ntc=2,
       tol=0.0000001,
@@ -26,20 +28,11 @@ NVT heating 0K - 300K in 150 ps + 50 ps maintenance w/ restraints on membrane an
       ntf=2,
       cut=10.0,
   /
-  &wt 
-    type='TEMP0',
-    istep1=0, istep2=75000,
-    value1=0.0, value2=300.0
-  /
-  &wt
-    type='END'      ! End of varying conditions
+  &ewald
+    skinnb=5.0, ! Increase skinnb to avoid skinnb errors
   /
 Solute restraints
 100
 RES SOLUTE_RES_GROUP
-END
-Membrane restraints
-10
-RES MEMBRANE_RES_GROUP
 END
 END

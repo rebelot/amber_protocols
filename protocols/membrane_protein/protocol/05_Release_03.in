@@ -1,35 +1,35 @@
-NPgT Production step (10 ns / 100 fr)
+NPgT 300K w/ restraints on protein backbone (1000 ps / 1000 fr)
   &cntrl
     !General 
     !Input
       ntx=5,
       irest=1,
     !Output
-      ntpr=50000,
-      ntwx=50000,
+      ntpr=500,
+      ntwx=500,
       iwrap=1,
     !Restraints
+      ntr=1,
+      restraintmask='(LIGAND_MASK) | ((PROTEIN_MASK) & (@CA,N,C))',
+      restraint_wt=1
     !Minimization
     !MD
-      nstlim=5000000,
+      nstlim=500000,
       dt=0.002,
     !Temperature
       ntt=3,
-      gamma_ln=2.0,
+      gamma_ln=1.0,
       ig=-1,
     !Pressure
       ntp=3,
-      barostat=2,
       csurften=3,
     !SHAKE
       ntc=2,
       tol=0.0000001,
     !Potential
       ntf=2,
-      cut=12.0,
-      fswitch=10.0,
+      cut=10.0,
   /
   &ewald
-    !GPU performance optimization
-      netfrc = 0, skin_permit = 0.75,
+    skinnb=3.0, ! Increase skinnb to avoid skinnb errors
   /
