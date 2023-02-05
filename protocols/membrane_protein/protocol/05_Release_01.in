@@ -1,4 +1,4 @@
-NPgT 300K w/ restraints on solute (1000 ps / 1000 fr)
+NPgT Berendsen 300K w/ restraints on solute (1000 ps / 1000 fr)
   &cntrl
     !General 
     !Input
@@ -29,7 +29,7 @@ NPgT 300K w/ restraints on solute (1000 ps / 1000 fr)
       cut=10.0,
   /
   &ewald
-    skinnb=3.0, ! Increase skinnb to avoid skinnb errors
+    skinnb=3.0,
   /
 Solute restraints
 10

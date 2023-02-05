@@ -1,4 +1,4 @@
-NPT heating 300K w/ restraints on membrane and solute (90 ps / 90 fr)
+NPT Berendsen 300K w/ restraints on membrane and solute (90 ps / 90 fr)
   &cntrl
     !General 
     !Input
