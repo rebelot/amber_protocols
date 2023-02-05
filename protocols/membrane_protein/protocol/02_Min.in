@@ -1,20 +1,24 @@
-Thorough minimization w/ restraints on protein heavy atoms
+Thorough minimization w/ SHAKE and restraints on protein heavy atoms
   &cntrl
     !General
       imin=1,
     !Input
     !Output
       ntpr=50,
+      iwrap=1,
     !Restraints
       ntr=1,
     !Minimization
       maxcyc=10000,
-      ncyc=5000,
+      ncyc=500,
     !MD
     !Temperature
     !Pressure
     !SHAKE
+      ntc=2, 
+      tol=0.0000001,
     !Potential
+      ntf=2,
       cut=10.0,
   /
 Solute restraints

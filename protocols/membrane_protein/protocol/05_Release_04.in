@@ -19,13 +19,15 @@ NPgT Berendsen 300K w/ no restraints (1000 ps / 1000 fr)
       ig=-1,
     !Pressure
       ntp=3,
+      barostat=2,
       csurften=3,
     !SHAKE
       ntc=2,
       tol=0.0000001,
     !Potential
       ntf=2,
-      cut=10.0,
+      cut=12.0,
+      fswitch=10.0,
   /
   &ewald
     skinnb=3.0,

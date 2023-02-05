@@ -1,4 +1,4 @@
-NPT Berendsen 300K w/ restraints on membrane and solute (100 ps / 100 fr)
+NPgT MC+fswitch 300K w/ restraints on solute (5000 ps / 5000 fr)
   &cntrl
     !General 
     !Input
@@ -12,28 +12,29 @@ NPT Berendsen 300K w/ restraints on membrane and solute (100 ps / 100 fr)
       ntr=1,
     !Minimization
     !MD
-      nstlim=50000,
+      nstlim=2500000,
       dt=0.002,
     !Temperature
       ntt=3,
       gamma_ln=1.0,
       ig=-1,
     !Pressure
-      ntp=2,
-      taup=2.0,
+      ntp=3,
+      barostat=2,
+      csurften=3,
     !SHAKE
       ntc=2,
       tol=0.0000001,
     !Potential
       ntf=2,
-      cut=10.0,
+      cut=12.0,
+      fswitch=10.0,
+  /
+  &ewald
+    skinnb=5.0,
   /
 Solute restraints
 100
 RES SOLUTE_RES_GROUP
-END
-Membrane restraints
-1
-RES MEMBRANE_RES_GROUP
 END
 END

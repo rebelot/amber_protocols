@@ -5,6 +5,7 @@ Short minimization w/ restraints on protein heavy atoms
     !Input
     !Output
       ntpr=50,
+      iwrap=1,
     !Restraints
       ntr=1,
     !Minimization
