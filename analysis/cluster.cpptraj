@@ -1,0 +1,16 @@
+parm system.prmtop
+trajin *.nc
+
+cluster clust \                                  
+  hieragglo epsilon 1.5 clusters 7 complete \   
+  epsilonplot eps.dat \                        
+  rms "@CA" \
+  pairdist pairdist.dat \                      
+  savepairdist \                               
+  out cnumvtime.dat \                            
+  summary summary.dat \                        
+  info info.dat \                              
+  bestrep cumulative \                         
+  cpopvtime cpopvtime.dat normframe \          
+  singlerepout singlerep.nc singlerepfmt netcdf \
+  repout rep repfmt pdb                        

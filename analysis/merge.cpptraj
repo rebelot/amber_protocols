@@ -1,0 +1,11 @@
+parm system.prmtop
+trajin *.nc # 1 last 10
+
+## Center or align
+autoimage
+# align @CA first
+
+## Strip the solvent
+# strip :WAT,Na+,Cl- outprefix dry
+
+trajout merged.nc

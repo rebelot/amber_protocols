@@ -1,0 +1,12 @@
+parm system.prmtop
+trajin *.nc
+
+vector boxinfo box out box.dat
+
+readdata *.mdout name MDOUT
+writedata etot.dat MDOUT[Etot]
+writedata eptot.dat MDOUT[EPtot]
+writedata temp.dat MDOUT[TEMP]
+writedata press.dat MDOUT[PRESS]
+writedata vol.dat MDOUT[VOLUME]
+writedata density.dat MDOUT[Density]

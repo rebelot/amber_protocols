@@ -1,0 +1,11 @@
+parm system.prmtop
+trajin *.nc
+
+set mask = "@CA"
+rmsd rmsd $mask out rmsd.dat first
+average crdset averaged
+run
+
+align $mask ref averaged
+rmsf out rmsf.dat $mask byres
+run
