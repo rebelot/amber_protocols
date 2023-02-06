@@ -9,6 +9,9 @@ NPgT Berendsen 300K w/ no restraints (1000 ps / 1000 fr)
       ntwx=500,
       iwrap=1,
     !Restraints
+      ntr=1,
+      restraintmask='BACKBONE_MASK',
+      restraint_wt=0.1
     !Minimization
     !MD
       nstlim=500000,

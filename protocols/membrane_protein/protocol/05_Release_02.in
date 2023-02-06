@@ -1,4 +1,4 @@
-NPgT 300K w/ restraints on protein backbone (1000 ps / 1000 fr)
+NPgT 300K w/ restraints on protein backbone (500 ps / 500 fr)
   &cntrl
     !General 
     !Input
@@ -14,7 +14,7 @@ NPgT 300K w/ restraints on protein backbone (1000 ps / 1000 fr)
       restraint_wt=10
     !Minimization
     !MD
-      nstlim=500000,
+      nstlim=250000,
       dt=0.002,
     !Temperature
       ntt=3,
