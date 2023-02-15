@@ -1,32 +1,39 @@
 #!/bin/bash
 
 if [[ $# -ne 5 ]]; then
-    echo "Usage: $0 prmtop inpcrd step nrep basename"
-    echo "prmtop:   <file> input topology"
-    echo "inpcrd:   <file> input coordinates"
-    echo "step:     <file> configuration file"
-    echo "nrep:     <num>  number of times step is repeated"
-    echo "basename: <name> output files basename"
-    exit 1
+	echo "Usage: $0 prmtop inpcrd step nrep basename"
+	echo "prmtop:   <file> input topology"
+	echo "inpcrd:   <file> input coordinates"
+	echo "step:     <file[,file]> configuration file. If two files are given, the first file will be used just for the first step."
+	echo "nrep:     <num>  number of times step is repeated"
+	echo "basename: <name> output files basename"
+	exit 1
 fi
 
 PRMTOP=$1
 INPCRD=$2
-STEP_IN=$3
 NSTEPS=$4
 NAME=$5
 
+IFS=',' read -r -a mdin <<<"$3"
+
 inpcrd=$INPCRD
 for ((i = 1; i <= 10#${NSTEPS}; i++)); do
-    istep=$(printf "%0${#NSTEPS}d" "$i")
-    if [[ ! -f "${NAME}_step_${istep}.ok" ]]; then
-        echo "Step $istep"
+	istep=$(printf "%0${#NSTEPS}d" "$i")
+	if [[ ! -f "${NAME}_step_${istep}.ok" ]]; then
+		echo "Step $istep"
 
-        grep -q 'imin\s*=\s*1' "$STEP_IN" && prog="$AMBERHOME/bin/pmemd.cuda_DPFP" || prog="$AMBERHOME/bin/pmemd.cuda"
-        "$prog" -O -i "$STEP_IN" -o "${NAME}_${istep}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${istep}.rst7" -ref "$inpcrd" -inf "${NAME}_${istep}.mdinfo" -x "${NAME}_${istep}.nc" || exit 1
-        touch "${NAME}_step_${istep}.ok"
-        echo "done: $(date)"
-        echo
-    fi
-    inpcrd="${NAME}_${istep}.rst7"
+		if [[ $i -gt 1 && ${#mdin[@]} -gt 1 ]]; then
+			STEP_IN=${mdin[1]}
+		else
+			STEP_IN=${mdin[0]}
+		fi
+
+		grep -q 'imin\s*=\s*1' "$STEP_IN" && prog="$AMBERHOME/bin/pmemd.cuda_DPFP" || prog="$AMBERHOME/bin/pmemd.cuda"
+		"$prog" -O -i "$STEP_IN" -o "${NAME}_${istep}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${istep}.rst7" -ref "$inpcrd" -inf "${NAME}_${istep}.mdinfo" -x "${NAME}_${istep}.nc" || exit 1
+		touch "${NAME}_step_${istep}.ok"
+		echo "done: $(date)"
+		echo
+	fi
+	inpcrd="${NAME}_${istep}.rst7"
 done
