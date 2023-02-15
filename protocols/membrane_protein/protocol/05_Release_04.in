@@ -1,4 +1,4 @@
-NPgT Berendsen 300K w/ no restraints (1000 ps / 1000 fr)
+NPgT 300K w/ restraints on protein backbone (1000 ps / 1000 fr)
   &cntrl
     !General 
     !Input
