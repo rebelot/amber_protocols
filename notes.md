@@ -19,10 +19,12 @@
 
 ## Visualization using PyMOL
 
-The best way to visualize amber structures in PyMOL is to load them as `pdb` files,
-which can be easily generated from coupled topology/coordinate files using the
-`ambpdb` utility shipped with Amber tools.
+```pymol
+load system.prmtop; load_traj system.inpcrd, format=rst7
+load system.prmtop; load_traj system.rst7, format=rst7
+load system.prmtop; load_traj system.rst7, format=nc
 
+```
 ```bash
 ambpdb -p system.prmtop -c system.inpcrd -ext -conect > system.pdb
 
