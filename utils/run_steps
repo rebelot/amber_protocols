@@ -1,42 +1,46 @@
 #!/bin/bash
 
-if [[ $# -ne 5 ]]; then
-    echo "Usage: $0 prmtop inpcrd basename protdir"
-    echo "prmtop:   <file> input topology"
-    echo "inpcrd:   <file> input coordinates"
-    echo "protdir:  <dir>  protocol directory"
-    echo "protglob: <string> glob pattern matching protocol files"
-    echo "basename: <name> output files basename"
-    echo
-    echo "Note: Protocol files (mdin) are searched for in 'protdir' with 'ptrotglob' query and sorted"
-    echo "Example output:"
-    echo "with <basename> = 'myMDEquil' and protocol file <protdir>/01_Min.in"
-    echo "myMDEquil_01_Min.{rst7,mdout,nc,mdinfo} myMDEquil_step_01_Min.ok"
-    exit 1
+if [[ $# -ne 4 ]]; then
+	echo "Usage: $0 prmtop inpcrd steps basename"
+	echo "prmtop:   <file> input topology"
+	echo "inpcrd:   <file> input coordinates"
+	echo "steps:    <file[,file[,...]]> input files list."
+	echo "basename: <name> output files basename"
+	echo
+	echo "Example output:"
+	echo "with <basename> = 'myMDEquil' and protocol file <protdir>/01_Min.in"
+	echo "myMDEquil_01_Min.{rst7,mdout,nc,mdinfo} myMDEquil_step_01_Min.ok"
+	exit 1
 fi
 
 PRMTOP=$1
 INPCRD=$2
-PROTDIR=$3
-PROTGLOB=$4
-NAME=$5
+IFS=$'\n, ' read -r -a infiles <<<"$3"
+NAME=$4
 
-mapfile -t infiles < <(find "$PROTDIR" -maxdepth 1 -name "$PROTGLOB" | sort)
 echo "processing step files:"
 printf "%s\n" "${infiles[@]}"
 echo
 
 inpcrd=$INPCRD
 for inp in "${infiles[@]}"; do
-    step=$(basename "${inp%.*}")
-    if [[ ! -f "${NAME}_step_${step}.ok" ]]; then
-        echo "Stage $step: $inp - $(head -n 1 "$inp")"
+	step=$(basename "${inp%.*}")
+	if [[ ! -f "${NAME}_step_${step}.ok" ]]; then
+		echo "Stage $step: $inp - $(head -n 1 "$inp")"
 
-        grep -q 'imin\s*=\s*1' "$inp" && prog="$AMBERHOME/bin/pmemd.cuda_DPFP" || prog="$AMBERHOME/bin/pmemd.cuda"
-        "$prog" -O -i "$inp" -o "${NAME}_${step}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${step}.rst7" -ref "$inpcrd" -inf "${NAME}_${step}.mdinfo" -x "${NAME}_${step}.nc" || exit 1
-        touch "${NAME}_step_${step}.ok"
-        echo "done: $(date)"
-        echo
-    fi
-    inpcrd="${NAME}_${step}.rst7"
+		if grep -q 'imin\s*=\s*1' "$inp"; then
+			prog="$AMBERHOME/bin/pmemd.cuda_DPFP"
+			if [[ $inp =~ _CPU ]]; then
+				prog="$AMBERHOME/bin/pmemd"
+			fi
+		else
+			prog="$AMBERHOME/bin/pmemd.cuda"
+		fi
+
+		"$prog" -O -i "$inp" -o "${NAME}_${step}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${step}.rst7" -ref "$inpcrd" -inf "${NAME}_${step}.mdinfo" -x "${NAME}_${step}.nc" || exit 1
+		touch "${NAME}_step_${step}.ok"
+		echo "done: $(date)"
+		echo
+	fi
+	inpcrd="${NAME}_${step}.rst7"
 done

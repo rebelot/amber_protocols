@@ -149,15 +149,17 @@ exit.
 
 Repeat a step (`mdin`) `nrep` times,
 with the output of each run being used as the input for the next one.
+`step` can be a list of two filenames, if so, the first input file will be used
+only for the first step. Useful to create "starter" input files.
 
 ### `run_steps`
 
-`run_steps: prmtop inpcrd protdir protglob basename`
+`run_steps: prmtop inpcrd steps basename`
 
 Launch a series of steps (`mdin`) in sequence,
 with the output of each step being used as the input for the next one.
-Step configurations are searched for in `protdir` directory, sorting
-any file matching the `protglob` pattern.
+`steps` should be a list of filenames, separated by newline, spaces, or commas.
+e.g., `$( find . -name "*.in" | sort )`
 
 ### `rep_step`
 

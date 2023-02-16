@@ -4,7 +4,8 @@ if [[ $# -ne 5 ]]; then
 	echo "Usage: $0 prmtop inpcrd step nrep basename"
 	echo "prmtop:   <file> input topology"
 	echo "inpcrd:   <file> input coordinates"
-	echo "step:     <file[,file]> configuration file. If two files are given, the first file will be used just for the first step."
+	echo "step:     <file[,file]> configuration file."
+	echo "          If two files are given, the first file will be used just for the first step."
 	echo "nrep:     <num>  number of times step is repeated"
 	echo "basename: <name> output files basename"
 	exit 1
@@ -12,10 +13,9 @@ fi
 
 PRMTOP=$1
 INPCRD=$2
+IFS=$'\n, ' read -r -a mdin <<<"$3"
 NSTEPS=$4
 NAME=$5
-
-IFS=',' read -r -a mdin <<<"$3"
 
 inpcrd=$INPCRD
 for ((i = 1; i <= 10#${NSTEPS}; i++)); do
@@ -27,6 +27,15 @@ for ((i = 1; i <= 10#${NSTEPS}; i++)); do
 			STEP_IN=${mdin[1]}
 		else
 			STEP_IN=${mdin[0]}
+		fi
+
+		if grep -q 'imin\s*=\s*1' "$STEP_IN"; then
+			prog="$AMBERHOME/bin/pmemd.cuda_DPFP"
+			if [[ $STEP_IN =~ _CPU ]]; then
+				prog="$AMBERHOME/bin/pmemd"
+			fi
+		else
+			prog="$AMBERHOME/bin/pmemd.cuda"
 		fi
 
 		grep -q 'imin\s*=\s*1' "$STEP_IN" && prog="$AMBERHOME/bin/pmemd.cuda_DPFP" || prog="$AMBERHOME/bin/pmemd.cuda"
