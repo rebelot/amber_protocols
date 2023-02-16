@@ -38,7 +38,6 @@ for ((i = 1; i <= 10#${NSTEPS}; i++)); do
 			prog="$AMBERHOME/bin/pmemd.cuda"
 		fi
 
-		grep -q 'imin\s*=\s*1' "$STEP_IN" && prog="$AMBERHOME/bin/pmemd.cuda_DPFP" || prog="$AMBERHOME/bin/pmemd.cuda"
 		"$prog" -O -i "$STEP_IN" -o "${NAME}_${istep}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${istep}.rst7" -ref "$inpcrd" -inf "${NAME}_${istep}.mdinfo" -x "${NAME}_${istep}.nc" || exit 1
 		touch "${NAME}_step_${istep}.ok"
 		echo "done: $(date)"
