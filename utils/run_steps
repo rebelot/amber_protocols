@@ -37,6 +37,8 @@ for inp in "${infiles[@]}"; do
 			prog="$AMBERHOME/bin/pmemd.cuda"
 		fi
 
+		[[ -n $TEST ]] && prog="echo"
+
 		"$prog" -O -i "$inp" -o "${NAME}_${step}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${step}.rst7" -ref "$inpcrd" -inf "${NAME}_${step}.mdinfo" -x "${NAME}_${step}.nc" || exit 1
 		touch "${NAME}_step_${step}.ok"
 		echo "done: $(date)"
