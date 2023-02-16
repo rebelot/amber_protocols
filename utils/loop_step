@@ -15,35 +15,35 @@ fi
 
 PRMTOP=$1
 INPCRD=$2
-IFS=$'\n, ' read -r -a mdin <<<"$3"
-NSTEPS=$4
+IFS=$'\n, ' read -r -a steps <<<"$3"
+NREP=$4
 NAME=$5
 
 inpcrd=$INPCRD
-for ((i = 1; i <= 10#${NSTEPS}; i++)); do
-	istep=$(printf "%0${#NSTEPS}d" "$i")
-	if [[ ! -f "${NAME}_step_${istep}.ok" ]]; then
-		echo "Step $istep"
+for ((i = 1; i <= 10#${NREP}; i++)); do
+	step=$(printf "%0${#NREP}d" "$i")
+	if [[ ! -f "${NAME}_step_${step}.ok" ]]; then
+		echo "Step $step"
 
-		if [[ $i -gt 1 && ${#mdin[@]} -gt 1 ]]; then
-			STEP_IN=${mdin[1]}
+		if [[ $i -gt 1 && ${#steps[@]} -gt 1 ]]; then
+			mdin=${steps[1]}
 		else
-			STEP_IN=${mdin[0]}
+			mdin=${steps[0]}
 		fi
 
-		if grep -q 'imin\s*=\s*1' "$STEP_IN"; then
+		if grep -q 'imin\s*=\s*1' "$mdin"; then
 			prog="$AMBERHOME/bin/pmemd.cuda_DPFP"
-			if [[ $STEP_IN =~ _CPU ]]; then
+			if [[ $mdin =~ _CPU ]]; then
 				prog="$AMBERHOME/bin/pmemd"
 			fi
 		else
 			prog="$AMBERHOME/bin/pmemd.cuda"
 		fi
 
-		"$echo" "$prog" -O -i "$STEP_IN" -o "${NAME}_${istep}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${istep}.rst7" -ref "$inpcrd" -inf "${NAME}_${istep}.mdinfo" -x "${NAME}_${istep}.nc" || exit 1
-		touch "${NAME}_step_${istep}.ok"
+		"$echo" "$prog" -O -i "$mdin" -o "${NAME}_${step}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${step}.rst7" -ref "$inpcrd" -inf "${NAME}_${step}.mdinfo" -x "${NAME}_${step}.nc" || exit 1
+		touch "${NAME}_step_${step}.ok"
 		echo "done: $(date)"
 		echo
 	fi
-	inpcrd="${NAME}_${istep}.rst7"
+	inpcrd="${NAME}_${step}.rst7"
 done

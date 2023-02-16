@@ -13,33 +13,33 @@ if [[ $# -ne 4 ]]; then
 	exit 1
 fi
 
+[[ -n $TEST ]] && echo="echo"
+
 PRMTOP=$1
 INPCRD=$2
-IFS=$'\n, ' read -r -a infiles <<<"$3"
+IFS=$'\n, ' read -r -a steps <<<"$3"
 NAME=$4
 
 echo "processing step files:"
-printf "%s\n" "${infiles[@]}"
+printf "%s\n" "${steps[@]}"
 echo
 
 inpcrd=$INPCRD
-for inp in "${infiles[@]}"; do
-	step=$(basename "${inp%.*}")
+for mdin in "${steps[@]}"; do
+	step=$(basename "${mdin%.*}")
 	if [[ ! -f "${NAME}_step_${step}.ok" ]]; then
-		echo "Stage $step: $inp - $(head -n 1 "$inp")"
+		echo "Stage $step: $mdin - $(head -n 1 "$mdin")"
 
-		if grep -q 'imin\s*=\s*1' "$inp"; then
+		if grep -q 'imin\s*=\s*1' "$mdin"; then
 			prog="$AMBERHOME/bin/pmemd.cuda_DPFP"
-			if [[ $inp =~ _CPU ]]; then
+			if [[ $mdin =~ _CPU ]]; then
 				prog="$AMBERHOME/bin/pmemd"
 			fi
 		else
 			prog="$AMBERHOME/bin/pmemd.cuda"
 		fi
 
-		[[ -n $TEST ]] && prog="echo"
-
-		"$prog" -O -i "$inp" -o "${NAME}_${step}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${step}.rst7" -ref "$inpcrd" -inf "${NAME}_${step}.mdinfo" -x "${NAME}_${step}.nc" || exit 1
+		"$echo" "$prog" -O -i "$mdin" -o "${NAME}_${step}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${step}.rst7" -ref "$inpcrd" -inf "${NAME}_${step}.mdinfo" -x "${NAME}_${step}.nc" || exit 1
 		touch "${NAME}_step_${step}.ok"
 		echo "done: $(date)"
 		echo
