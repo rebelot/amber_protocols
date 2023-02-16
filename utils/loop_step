@@ -11,6 +11,8 @@ if [[ $# -ne 5 ]]; then
 	exit 1
 fi
 
+[[ -n $TEST ]] && echo="echo"
+
 PRMTOP=$1
 INPCRD=$2
 IFS=$'\n, ' read -r -a mdin <<<"$3"
@@ -38,9 +40,7 @@ for ((i = 1; i <= 10#${NSTEPS}; i++)); do
 			prog="$AMBERHOME/bin/pmemd.cuda"
 		fi
 
-		[[ -n $TEST ]] && prog="echo"
-
-		"$prog" -O -i "$STEP_IN" -o "${NAME}_${istep}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${istep}.rst7" -ref "$inpcrd" -inf "${NAME}_${istep}.mdinfo" -x "${NAME}_${istep}.nc" || exit 1
+		"$echo" "$prog" -O -i "$STEP_IN" -o "${NAME}_${istep}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${istep}.rst7" -ref "$inpcrd" -inf "${NAME}_${istep}.mdinfo" -x "${NAME}_${istep}.nc" || exit 1
 		touch "${NAME}_step_${istep}.ok"
 		echo "done: $(date)"
 		echo
