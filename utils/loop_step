@@ -11,11 +11,9 @@ if [[ $# -ne 5 ]]; then
 	exit 1
 fi
 
-[[ -n $TEST ]] && echo="echo"
-
 PRMTOP=$1
 INPCRD=$2
-IFS=$'\n, ' read -r -a steps <<<"$3"
+IFS=$'\n, ' read -r -a steps <<<$3
 NREP=$4
 NAME=$5
 
@@ -40,7 +38,9 @@ for ((i = 1; i <= 10#${NREP}; i++)); do
 			prog="$AMBERHOME/bin/pmemd.cuda"
 		fi
 
-		"$echo" "$prog" -O -i "$mdin" -o "${NAME}_${step}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${step}.rst7" -ref "$inpcrd" -inf "${NAME}_${step}.mdinfo" -x "${NAME}_${step}.nc" || exit 1
+        [[ -n $TEST ]] && prog="echo $prog"
+
+		"$prog" -O -i "$mdin" -o "${NAME}_${step}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${step}.rst7" -ref "$inpcrd" -inf "${NAME}_${step}.mdinfo" -x "${NAME}_${step}.nc" || exit 1
 		touch "${NAME}_step_${step}.ok"
 		echo "done: $(date)"
 		echo

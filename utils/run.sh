@@ -17,7 +17,7 @@ if true; then                       # Set to true to run this section
 
     NAME=MD_equil                   # The basename for MD files
     INPCRD=system.inpcrd            # Input coordinates
-    STEPS="$(find . -name '*.in' | sort )"
+    STEPS="$(find . -maxdepth 1 -name '*.in' | sort )"
 
     ./run_steps "$PRMTOP" "$INPCRD" "$STEPS" "$NAME" || exit 1
 fi

@@ -13,11 +13,9 @@ if [[ $# -ne 4 ]]; then
 	exit 1
 fi
 
-[[ -n $TEST ]] && echo="echo"
-
 PRMTOP=$1
 INPCRD=$2
-IFS=$'\n, ' read -r -a steps <<<"$3"
+IFS=$'\n, ' read -r -a steps <<<$3
 NAME=$4
 
 echo "processing step files:"
@@ -39,7 +37,9 @@ for mdin in "${steps[@]}"; do
 			prog="$AMBERHOME/bin/pmemd.cuda"
 		fi
 
-		"$echo" "$prog" -O -i "$mdin" -o "${NAME}_${step}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${step}.rst7" -ref "$inpcrd" -inf "${NAME}_${step}.mdinfo" -x "${NAME}_${step}.nc" || exit 1
+        [[ -n $TEST ]] && prog="echo $prog"
+
+		"$prog" -O -i "$mdin" -o "${NAME}_${step}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${step}.rst7" -ref "$inpcrd" -inf "${NAME}_${step}.mdinfo" -x "${NAME}_${step}.nc" || exit 1
 		touch "${NAME}_step_${step}.ok"
 		echo "done: $(date)"
 		echo
