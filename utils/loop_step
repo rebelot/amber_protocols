@@ -13,7 +13,7 @@ fi
 
 PRMTOP=$1
 INPCRD=$2
-IFS=$'\n, ' read -r -a steps <<<$3
+mapfile -t steps < <(echo "$3" | tr ", " "\n")
 NREP=$4
 NAME=$5
 
