@@ -25,6 +25,10 @@ echo
 inpcrd=$INPCRD
 for mdin in "${steps[@]}"; do
 	step=$(basename "${mdin%.*}")
+	if [[ -f "${NAME}_step_${step}.stop" ]]; then
+		echo "Stop file found: ${NAME}_step_${step}.stop"
+		exit 1
+	fi
 	if [[ ! -f "${NAME}_step_${step}.ok" ]]; then
 		echo "Stage $step: $mdin - $(head -n 1 "$mdin")"
 

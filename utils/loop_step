@@ -20,6 +20,10 @@ NAME=$5
 inpcrd=$INPCRD
 for ((i = 1; i <= 10#${NREP}; i++)); do
 	step=$(printf "%0${#NREP}d" "$i")
+	if [[ -f "${NAME}_step_${step}.stop" ]]; then
+		echo "Stop file found: ${NAME}_step_${step}.stop"
+		exit 1
+	fi
 	if [[ ! -f "${NAME}_step_${step}.ok" ]]; then
 		echo "Step $step"
 
@@ -38,7 +42,7 @@ for ((i = 1; i <= 10#${NREP}; i++)); do
 			prog="$AMBERHOME/bin/pmemd.cuda"
 		fi
 
-        [[ -n $TEST ]] && prog="echo $prog"
+		[[ -n $TEST ]] && prog="echo $prog"
 
 		"$prog" -O -i "$mdin" -o "${NAME}_${step}.mdout" -p "$PRMTOP" -c "$inpcrd" -r "${NAME}_${step}.rst7" -ref "$inpcrd" -inf "${NAME}_${step}.mdinfo" -x "${NAME}_${step}.nc" || exit 1
 		touch "${NAME}_step_${step}.ok"
