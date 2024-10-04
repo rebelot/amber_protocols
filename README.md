@@ -143,6 +143,17 @@ exit.
 
 ## Utils
 
+### Restarting and Stopping
+
+Checkpoint files will be written for each completed step
+with the name `<basename>_step_<stepname or stepnum>.ok`,
+if such file exists, the corresponding step will be skipped,
+so that restarting a simulation only requires to re-run `run.sh`.
+
+At any point, if a file with the name `<basename>_step_<stepname or stepnum>.stop` is found,
+the execution will be halted before that step.
+
+
 ### `loop_step`
 
 `loop_step: prmtop inpcrd step nrep basename`
