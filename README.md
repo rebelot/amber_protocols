@@ -8,6 +8,7 @@
     - [Run replicas](#run-replicas)
       - [Restart individual replicas](#restart-individual-replicas)
   - [Utils](#utils)
+    - [Restarting and Stopping](#restarting-and-stopping)
     - [`loop_step`](#loopstep)
     - [`run_steps`](#runsteps)
     - [`rep_step`](#repstep)
